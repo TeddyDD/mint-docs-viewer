@@ -163,6 +163,9 @@ enum Page {
 
   /* Any other page */
   Entity
+
+	/* Search result */
+  Search
 }
 
 /* Represents the possible top-level entities. */

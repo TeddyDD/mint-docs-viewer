@@ -1,4 +1,8 @@
 routes {
+	/search/:query (query : String) {
+		Application.search(query)
+	}
+
   /:package/:tab/:selected (package : String, tab : String, selected : String) {
     Application.route(package, tab, Maybe.just(selected))
   }

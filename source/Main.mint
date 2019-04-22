@@ -28,6 +28,7 @@ component Main {
     case (page) {
       Page::Dashboard => <Dashboard/>
       Page::Package => <Package/>
+      Page::Search => <SearchResult/>
 
       Page::Entity =>
         <div::content>
