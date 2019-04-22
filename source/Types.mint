@@ -147,6 +147,12 @@ record EnumOption {
   name : String
 }
 
+record SearchItem {
+	packageName : String,
+	tabName : String,
+	entity : String,
+}
+
 /* Represents a page of the documentation. */
 enum Page {
   /* The dashboard */
