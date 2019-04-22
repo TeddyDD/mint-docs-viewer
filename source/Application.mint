@@ -18,6 +18,11 @@ store Application {
   /* The current page. */
   state page : Page = Page::Dashboard
 
+  /* Search query */
+  state query : String = ""
+
+  state results : Array(SearchItem) = []
+
   /* Loads the documentation. */
   fun load : Promise(Never, Void) {
     if (status == Status::Initial) {
@@ -176,6 +181,45 @@ store Application {
       /* If we could not the package. */
     } catch {
       Window.navigate("/")
+    }
+  }
+
+  fun flatten (arr : Array(Array(a))) : Array(a) {
+    arr
+    |> Array.flatMap((arr : Array(a)) : Array(a) {
+      arr
+    })
+  }
+
+  fun search (query : String) : Promise(Never, Void) {
+    sequence {
+      Application.load()
+
+      next
+        {
+          documentation = Documentation.empty(),
+          selected = Content.empty(),
+          page = Page::Search,
+          query = query
+        }
+
+      result =
+        for (d of documentations) {
+          for (c of d.components) {
+            {
+              packageName = d.name,
+              tabName = "component",
+              entity = c.name
+            }
+          } when {
+            String.match(
+              String.toLowerCase(query),
+              String.toLowerCase(c.name)) == true
+          }
+        }
+        |> flatten()
+
+      next { results = result }
     }
   }
 }
